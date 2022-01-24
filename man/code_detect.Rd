@@ -27,3 +27,9 @@ Concatenate vectors containing company names with \code{|}
 and return the matched company
 with the \code{str_detect} function of the {stringr} package.
 }
+\examples{
+find <- code_detect(c("APAMAN", "YU-WA Creation Holdings"))
+find$code #extract brand code
+find$info #extract matched data
+
+}

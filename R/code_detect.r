@@ -19,8 +19,14 @@
 #'
 #' @export
 #'
+#' @examples
+#' find <- code_detect(c("APAMAN", "YU-WA Creation Holdings"))
+#' find$code #extract brand code
+#' find$info #extract matched data
+#'
 code_detect <- function(firm) {
   pattern <- paste(firm, collapse = "|")
+  pattern <- paste0("(", pattern, ")")
   codelist <- YahooFinance::BrandCode
   matched <- grep(pattern, codelist[["name"]])
   extract <- codelist[matched, ]

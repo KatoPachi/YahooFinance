@@ -4,10 +4,14 @@
 \alias{scrape_onefirm}
 \title{Web Scraping of Stock Price Data for One Brand}
 \usage{
-scrape_onefirm(code, start_date, end_date, datatype)
+scrape_onefirm(code, name = NULL, start_date, end_date, datatype)
 }
 \arguments{
 \item{code}{numeric. Specify a brand code}
+
+\item{name}{character. Specify company name.
+If specified, ignore \code{code} argument and
+find out brand code by \code{code_detect}.}
 
 \item{start_date}{numeric.
 Specify the start date of the stock price data you want to acquire
@@ -36,6 +40,19 @@ o connect the stock price data on each page in the row direction.
 }
 \examples{
 # Acquire 2014 daily stock price data of Sony Group (brand code 6758)
-scrape_onefirm(6758, 20140101, 20141231, "d")
+scrape_onefirm(
+  6758,
+  start_date = 20140101,
+  end_date = 20141231,
+  datatype = "d"
+)
+
+# Acquire 2014 monthly stock price data of APAMAN
+scrape_onefirm(
+  name = "APAMAN",
+  start_date = 20140101,
+  end_date = 20141231,
+  datatype = "m"
+)
 
 }

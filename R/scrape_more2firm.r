@@ -8,6 +8,9 @@
 #' to obtain it from the list composed of the data of each brand.
 #'
 #' @param code numeric vector. Specify brand codes.
+#' @param name character vector. Specify company name.
+#' If specified, ignore `code` argument and
+#' find out brand code by `code_detect`.
 #' @param start_date numeric.
 #' Specify the start date of the stock price data you want to acquire
 #' in the format of yyyymmdd.
@@ -39,25 +42,52 @@
 #' # Combine the 2014 monthly stock price data of
 #' # Sony Group (6758) and Nintendo Co., Ltd. (7974)
 #' # into one data frame
-#' scrape_more2firm(c(6758, 7974), 20140101, 20141231, "m")
+#' scrape_more2firm(
+#'   c(6758, 7974),
+#'   start_date = 20140101,
+#'   end_date = 20141231,
+#'   datatype = "m"
+#' )
+#'
+#' # Combine the 2014 monthly stock price data of
+#' # APAMAN and YU-WA Creation Holdings
+#' # into one data frame
+#' scrape_more2firm(
+#'   name = c("APAMAN", "YU-WA Creation Holdings"),
+#'   start_date = 20140101,
+#'   end_date = 20141231,
+#'   datatype = "m",
+#' )
 #'
 #' # Save the 2014 monthly stock price data of
 #' # Sony Group (6758) and Nintendo Co., Ltd. (7974)
 #' # a list named dt
 #' dt <- scrape_more2firm(
-#'   c(6758, 7974), 20140101, 20141231, "m", append = FALSE
+#'   c(6758, 7974),
+#'   start_date = 20140101,
+#'   end_date = 20141231,
+#'   datatype = "m",
+#'   append = FALSE
 #' )
 #' dt$b6758 #extract Sony Group
 #' dt$b7974 #extract Nintendo
 #'
 scrape_more2firm <- function(
-  code, start_date, end_date, datatype, append = TRUE
+  code, name = NULL, start_date, end_date, datatype,
+  append = TRUE
 ) {
+  if (!is.null(name)) {
+    find <- code_detect(name)
+    code <- find$code
+  }
   if (append) {
     dt <- NULL
     for (i in code) {
       newdt <- scrape_onefirm(
-        i, start_date, end_date, datatype
+        i,
+        start_date = start_date,
+        end_date = end_date,
+        datatype = datatype
       )
       dt <- bind_rows(dt, newdt)
     }
@@ -66,7 +96,10 @@ scrape_more2firm <- function(
     dt <- vector("list", length(code))
     for (i in seq_len(length(code))) {
       dt[[i]] <- scrape_onefirm(
-        code[i], start_date, end_date, datatype
+        code[i],
+        start_date = start_date,
+        end_date = end_date,
+        datatype = datatype
       )
     }
     names(dt) <- paste0("b", code)

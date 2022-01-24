@@ -124,6 +124,9 @@ scrape_onepage <- function(code, start_date, end_date, datatype, page) {
 #' o connect the stock price data on each page in the row direction.
 #'
 #' @param code numeric. Specify a brand code
+#' @param name character. Specify company name.
+#' If specified, ignore `code` argument and
+#' find out brand code by `code_detect`.
 #' @param start_date numeric.
 #' Specify the start date of the stock price data you want to acquire
 #' in the format of yyyymmdd.
@@ -140,9 +143,31 @@ scrape_onepage <- function(code, start_date, end_date, datatype, page) {
 #' @export
 #' @examples
 #' # Acquire 2014 daily stock price data of Sony Group (brand code 6758)
-#' scrape_onefirm(6758, 20140101, 20141231, "d")
+#' scrape_onefirm(
+#'   6758,
+#'   start_date = 20140101,
+#'   end_date = 20141231,
+#'   datatype = "d"
+#' )
 #'
-scrape_onefirm <- function(code, start_date, end_date, datatype) {
+#' # Acquire 2014 monthly stock price data of APAMAN
+#' scrape_onefirm(
+#'   name = "APAMAN",
+#'   start_date = 20140101,
+#'   end_date = 20141231,
+#'   datatype = "m"
+#' )
+#'
+scrape_onefirm <- function(code, name = NULL, start_date, end_date, datatype) {
+  # Find brand code if name is specified
+  if (!is.null(name)) {
+    if (length(name) > 1) stop("Only 1 firm name can be passed.")
+    find <- code_detect(name)
+    code <- find$code
+    if (length(code) > 1) stop(
+      "The number of matched brand codes is more than one."
+    )
+  }
   # Calculate required number of pages
   maxpg <- page_count(code, start_date, end_date, datatype)
   # Generate NULL object
@@ -165,7 +190,7 @@ scrape_onefirm <- function(code, start_date, end_date, datatype) {
     "volume",
     "split_up_adjust_close_price"
   )
-  # character -> numeric
+  # character to numeric
   dt$open_price <- as.numeric(gsub(",", "", dt$open_price))
   dt$high_price <- as.numeric(gsub(",", "", dt$high_price))
   dt$low_price <- as.numeric(gsub(",", "", dt$low_price))
@@ -174,7 +199,7 @@ scrape_onefirm <- function(code, start_date, end_date, datatype) {
   dt$split_up_adjust_close_price <- as.numeric(
     gsub(",", "", dt$split_up_adjust_close_price)
   )
-  # character -> date
+  # character to date
   chrlist <- strsplit(dt$date, "(\u5e74|\u6708|\u65e5)")
   year <- sapply(chrlist, FUN = function(x) x[1])
   month <- sapply(chrlist, FUN = function(x) x[2])
