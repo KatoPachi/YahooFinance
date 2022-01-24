@@ -1,10 +1,18 @@
 #' Generate URL of Yahoo! Finance
 #'
 #' @param code numeric. Specify a brand code
-#' @param start_date numeric. Specify the start date of the stock price data you want to acquire in the format of yyyymmdd.
-#' @param end_date numeric. Specify the end date of the stock price data you want to acquire in the format of yyyymmdd.
-#' @param datatype character. Specify the type of stock price data. If `datatype = "d", get daily data. If `datatype = "w", get weekly data. If `datatype = "m", get monthly data.
-#' @param page numeric. Specify the page number of the stock price data you want to acquire.
+#' @param start_date numeric.
+#' Specify the start date of the stock price data you want to acquire
+#' in the format of yyyymmdd.
+#' @param end_date numeric.
+#' Specify the end date of the stock price data you want to acquire
+#' in the format of yyyymmdd.
+#' @param datatype character. Specify the type of stock price data.
+#' If `datatype = "d", get daily data.
+#' If `datatype = "w", get weekly data.
+#' If `datatype = "m", get monthly data.
+#' @param page numeric.
+#' Specify the page number of the stock price data you want to acquire.
 #'
 create_url <- function(code, start_date, end_date, datatype, page) {
   paste0(
@@ -23,9 +31,16 @@ create_url <- function(code, start_date, end_date, datatype, page) {
 
 #' Calculate The Number of Pages of Stock Price Data of A Certain Brand
 #' @param code numeric. Specify a brand code
-#' @param start_date numeric. Specify the start date of the stock price data you want to acquire in the format of yyyymmdd.
-#' @param end_date numeric. Specify the end date of the stock price data you want to acquire in the format of yyyymmdd.
-#' @param datatype character. Specify the type of stock price data. If `datatype = "d", get daily data. If `datatype = "w", get weekly data. If `datatype = "m", get monthly data.
+#' @param start_date numeric.
+#' Specify the start date of the stock price data you want to acquire
+#' in the format of yyyymmdd.
+#' @param end_date numeric.
+#' Specify the end date of the stock price data you want to acquire
+#' in the format of yyyymmdd.
+#' @param datatype character. Specify the type of stock price data.
+#' If `datatype = "d", get daily data.
+#' If `datatype = "w", get weekly data.
+#' If `datatype = "m", get monthly data.
 #'
 #' @importFrom rvest read_html
 #' @importFrom rvest html_elements
@@ -37,7 +52,10 @@ page_count <- function(code, start_date, end_date, datatype) {
   # Web Scraping the number of observations of stock price data
   nrecode <- read_html(find) %>%
     html_elements(
-      xpath = '//*[@id="root"]/main/div/div/div[1]/div[2]/section[2]/div/div[4]/p/text()[1]'
+      xpath = paste0(
+        '//*[@id="root"]/main/div/div/div[1]/',
+        "div[2]/section[2]/div/div[4]/p/text()[1]"
+      )
     ) %>%
     html_text2() %>%
     as.numeric()
@@ -62,10 +80,18 @@ page_count <- function(code, start_date, end_date, datatype) {
 #' and other functions are wrapper functions for this function.
 #'
 #' @param code numeric. Specify a brand code
-#' @param start_date numeric. Specify the start date of the stock price data you want to acquire in the format of yyyymmdd.
-#' @param end_date numeric. Specify the end date of the stock price data you want to acquire in the format of yyyymmdd.
-#' @param datatype character. Specify the type of stock price data. If `datatype = "d", get daily data. If `datatype = "w", get weekly data. If `datatype = "m", get monthly data.
-#' @param page numeric. Specify the page number of the stock price data you want to acquire.
+#' @param start_date numeric.
+#' Specify the start date of the stock price data you want to acquire
+#' in the format of yyyymmdd.
+#' @param end_date numeric.
+#' Specify the end date of the stock price data you want to acquire
+#' in the format of yyyymmdd.
+#' @param datatype character. Specify the type of stock price data.
+#' If `datatype = "d", get daily data.
+#' If `datatype = "w", get weekly data.
+#' If `datatype = "m", get monthly data.
+#' @param page numeric.
+#' Specify the page number of the stock price data you want to acquire.
 #' @return A tibble data containing stock price data
 #'
 #' @importFrom rvest read_html
@@ -98,9 +124,16 @@ scrape_onepage <- function(code, start_date, end_date, datatype, page) {
 #' o connect the stock price data on each page in the row direction.
 #'
 #' @param code numeric. Specify a brand code
-#' @param start_date numeric. Specify the start date of the stock price data you want to acquire in the format of yyyymmdd.
-#' @param end_date numeric. Specify the end date of the stock price data you want to acquire in the format of yyyymmdd.
-#' @param datatype character. Specify the type of stock price data. If `datatype = "d", get daily data. If `datatype = "w", get weekly data. If `datatype = "m", get monthly data.
+#' @param start_date numeric.
+#' Specify the start date of the stock price data you want to acquire
+#' in the format of yyyymmdd.
+#' @param end_date numeric.
+#' Specify the end date of the stock price data you want to acquire
+#' in the format of yyyymmdd.
+#' @param datatype character. Specify the type of stock price data.
+#' If `datatype = "d", get daily data.
+#' If `datatype = "w", get weekly data.
+#' If `datatype = "m", get monthly data.
 #' @return A tibble data containing stock price data
 #'
 #' @importFrom dplyr bind_rows

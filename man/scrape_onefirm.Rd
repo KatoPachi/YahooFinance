@@ -9,11 +9,17 @@ scrape_onefirm(code, start_date, end_date, datatype)
 \arguments{
 \item{code}{numeric. Specify a brand code}
 
-\item{start_date}{numeric. Specify the start date of the stock price data you want to acquire in the format of yyyymmdd.}
+\item{start_date}{numeric.
+Specify the start date of the stock price data you want to acquire
+in the format of yyyymmdd.}
 
-\item{end_date}{numeric. Specify the end date of the stock price data you want to acquire in the format of yyyymmdd.}
+\item{end_date}{numeric.
+Specify the end date of the stock price data you want to acquire
+in the format of yyyymmdd.}
 
-\item{datatype}{character. Specify the type of stock price data. If \verb{datatype = "d", get daily data. If }datatype = "w", get weekly data. If `datatype = "m", get monthly data.}
+\item{datatype}{character. Specify the type of stock price data.
+If \verb{datatype = "d", get daily data. If }datatype = "w", get weekly data.
+If `datatype = "m", get monthly data.}
 }
 \value{
 A tibble data containing stock price data
