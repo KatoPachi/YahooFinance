@@ -36,6 +36,6 @@ o connect the stock price data on each page in the row direction.
 }
 \examples{
 # Acquire 2014 daily stock price data of Sony Group (brand code 6758)
-scrape_onefirm(6785, 20140101, 20141231, "d")
+scrape_onefirm(6758, 20140101, 20141231, "d")
 
 }

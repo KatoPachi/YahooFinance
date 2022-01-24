@@ -140,7 +140,7 @@ scrape_onepage <- function(code, start_date, end_date, datatype, page) {
 #' @export
 #' @examples
 #' # Acquire 2014 daily stock price data of Sony Group (brand code 6758)
-#' scrape_onefirm(6785, 20140101, 20141231, "d")
+#' scrape_onefirm(6758, 20140101, 20141231, "d")
 #'
 scrape_onefirm <- function(code, start_date, end_date, datatype) {
   # Calculate required number of pages
@@ -155,6 +155,36 @@ scrape_onefirm <- function(code, start_date, end_date, datatype) {
     dt <- bind_rows(dt, newdt)
     Sys.sleep(1)
   }
+  # Rename columns
+  colnames(dt) <- c(
+    "date",
+    "open_price",
+    "high_price",
+    "low_price",
+    "close_price",
+    "volume",
+    "split_up_adjust_close_price"
+  )
+  # character -> numeric
+  dt$open_price <- as.numeric(gsub(",", "", dt$open_price))
+  dt$high_price <- as.numeric(gsub(",", "", dt$high_price))
+  dt$low_price <- as.numeric(gsub(",", "", dt$low_price))
+  dt$close_price <- as.numeric(gsub(",", "", dt$close_price))
+  dt$volume <- as.numeric(gsub(",", "", dt$volume))
+  dt$split_up_adjust_close_price <- as.numeric(
+    gsub(",", "", dt$split_up_adjust_close_price)
+  )
+  # character -> date
+  chrlist <- strsplit(dt$date, "(\u5e74|\u6708|\u65e5)")
+  year <- sapply(chrlist, FUN = function(x) x[1])
+  month <- sapply(chrlist, FUN = function(x) x[2])
+  month <- formatC(as.numeric(month), width = 2, flag = 0)
+  day <- sapply(chrlist, FUN = function(x) x[3])
+  day <- formatC(as.numeric(day), width = 2, flag = 0)
+  date <- paste(year, month, day, sep = "-")
+  dt$date <- as.Date(date)
+  # add brand code
+  dt$brand <- code
   # Output
   dt
 }
