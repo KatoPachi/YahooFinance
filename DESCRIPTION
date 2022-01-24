@@ -1,13 +1,20 @@
 Package: YahooFinance
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Title: Web Scraping of Stock Price Data from Yahoo! Finance
+Version: 1.0.0
+Authors@R: person(
+    "Hiroki", "Kato",
+    email = "vge008kh@student.econ.osaka-u.ac.jp",
+    role = c("aut", "cre"))
+Description: Scrap stock price data for Yahoo! Finance
+    (\url{https://finance.yahoo.co.jp/}).
+    By specifying multiple brand codes,
+    you can get stock price data of multiple companies with just one function.
+    There is also a function that 
+    allows you to search for a brand code
+    from a company name using JPX's public data,
+    so by specifying multiple company names,
+    you can obtain stock price data for multiple companies with just one function. 
+    Web scraping uses the functions of the {rvest} package.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
