@@ -5,7 +5,7 @@
 \alias{BrandCode}
 \title{Brands listed on the Tokyo Stock Exchange}
 \format{
-A data frame with 53940 rows and 10 variables:
+A data frame with 4170 rows and 4 variables:
 \describe{
 \item{code}{brand code}
 \item{name}{company name}

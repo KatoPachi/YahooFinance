@@ -4,7 +4,7 @@
 #' listed on the Tokyo Stock Exchange
 #' as of the end of December 2021 published by the JPX.
 #'
-#' @format A data frame with 53940 rows and 10 variables:
+#' @format A data frame with 4170 rows and 4 variables:
 #' \describe{
 #'   \item{code}{brand code}
 #'   \item{name}{company name}
