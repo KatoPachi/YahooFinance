@@ -108,6 +108,25 @@ scrape_onepage <- function(code, start_date, end_date, datatype, page) {
       xpath = '//*[@id="root"]/main/div/div/div[1]/div[2]/section[2]/div/table'
     ) %>%
     html_table()
+  # Rename columns
+  colnames(tab) <- c(
+    "date",
+    "open_price",
+    "high_price",
+    "low_price",
+    "close_price",
+    "volume",
+    "split_up_adjust_close_price"
+  )
+  # character to numeric
+  tab$open_price <- as.numeric(gsub(",", "", tab$open_price))
+  tab$high_price <- as.numeric(gsub(",", "", tab$high_price))
+  tab$low_price <- as.numeric(gsub(",", "", tab$low_price))
+  tab$close_price <- as.numeric(gsub(",", "", tab$close_price))
+  tab$volume <- as.numeric(gsub(",", "", tab$volume))
+  tab$split_up_adjust_close_price <- as.numeric(
+    gsub(",", "", tab$split_up_adjust_close_price)
+  )
   # output
   tab
 }
@@ -180,25 +199,6 @@ scrape_onefirm <- function(code, name = NULL, start_date, end_date, datatype) {
     dt <- bind_rows(dt, newdt)
     Sys.sleep(1)
   }
-  # Rename columns
-  colnames(dt) <- c(
-    "date",
-    "open_price",
-    "high_price",
-    "low_price",
-    "close_price",
-    "volume",
-    "split_up_adjust_close_price"
-  )
-  # character to numeric
-  dt$open_price <- as.numeric(gsub(",", "", dt$open_price))
-  dt$high_price <- as.numeric(gsub(",", "", dt$high_price))
-  dt$low_price <- as.numeric(gsub(",", "", dt$low_price))
-  dt$close_price <- as.numeric(gsub(",", "", dt$close_price))
-  dt$volume <- as.numeric(gsub(",", "", dt$volume))
-  dt$split_up_adjust_close_price <- as.numeric(
-    gsub(",", "", dt$split_up_adjust_close_price)
-  )
   # character to date
   chrlist <- strsplit(dt$date, "(\u5e74|\u6708|\u65e5)")
   year <- sapply(chrlist, FUN = function(x) x[1])
